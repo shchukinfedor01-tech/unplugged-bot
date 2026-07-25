@@ -1,0 +1,13 @@
+{
+  "name": "unplugged-bot",
+  "version": "2.0.0",
+  "description": "Unplugged Ticket Bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.6.1"
+  }
+}
