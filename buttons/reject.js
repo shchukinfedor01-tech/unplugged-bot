@@ -4,32 +4,38 @@ module.exports = {
     customId: "reject",
 
     async execute(interaction) {
-        console.log("❌ Отказ");
+        console.log("❌ Кнопка Отказать нажата");
 
         try {
             const userId = interaction.customId.split("_")[1];
-            console.log(`📝 ID пользователя: ${userId}`);
-            
+
+            if (!userId) {
+                return await interaction.reply({
+                    content: "❌ Ошибка: не найден ID пользователя",
+                    ephemeral: true
+                });
+            }
+
             const modal = new ModalBuilder()
-                .setCustomId(`reject_modal_${userId}`) // ← ПРОСТО! БЕЗ _${Date.now()}!
+                .setCustomId(`reject_modal_${userId}`)
                 .setTitle("❌ Причина отказа");
 
-            const reason = new TextInputBuilder()
+            const reasonInput = new TextInputBuilder()
                 .setCustomId("reason")
-                .setLabel("Причина отказа")
+                .setLabel("Укажите причину отказа")
                 .setStyle(TextInputStyle.Paragraph)
-                .setPlaceholder("Напишите причину отказа...")
+                .setPlaceholder("Напишите причину...")
                 .setRequired(true)
                 .setMaxLength(500);
 
             modal.addComponents(
-                new ActionRowBuilder().addComponents(reason)
+                new ActionRowBuilder().addComponents(reasonInput)
             );
 
             await interaction.showModal(modal);
 
         } catch (error) {
-            console.error("❌ Ошибка:", error);
+            console.error("❌ Ошибка в reject.js:", error);
             await interaction.reply({
                 content: `❌ Ошибка: ${error.message}`,
                 ephemeral: true
